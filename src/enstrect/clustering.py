@@ -2,12 +2,13 @@ import numpy as np
 from pyntcloud import PyntCloud
 from sklearn.cluster import DBSCAN
 
-def cluster_point_cloud(pcd_pynt, out_path, eps=0.01):
+
+def cluster_point_cloud(pcd_pynt, eps=0.01):
     """Clusters the defects of a point cloud."""
     pcd_pynt.points["cluster"] = np.zeros((len(pcd_pynt.points),), np.ubyte)  # empty attribute
 
-    for k in np.unique(pcd_pynt.points["defect"])[1:]: # 0 is assumed to be background
-        points = pcd_pynt.points.loc[pcd_pynt.points["defect"] == k].reset_index(drop=False)
+    for k in np.unique(pcd_pynt.points["argmax"])[1:]:  # 0 is assumed to be background
+        points = pcd_pynt.points.loc[pcd_pynt.points["argmax"] == k].reset_index(drop=False)
         cluster = DBSCAN(eps=eps, min_samples=20).fit_predict(np.array(points[['x', 'y', 'z']]))
 
         pcd_pynt.points.loc[points["index"], "cluster"] = \
@@ -15,7 +16,8 @@ def cluster_point_cloud(pcd_pynt, out_path, eps=0.01):
         pcd_pynt.points.loc[points["index"][cluster == -1], "cluster"] = 0
 
     return pcd_pynt
-        #ply_pred.to_file(str(out_path))
+    # ply_pred.to_file(str(out_path))
+
 
 if __name__ == "__main__":
     ply_path = "/media/chrisbe/backup/segments/bridge_b/segment1/cloud/cloud_tmp.ply"
