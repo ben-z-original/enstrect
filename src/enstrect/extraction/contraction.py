@@ -69,17 +69,15 @@ def extract_lines(pcd_pynt):
 
         # crack
         if classes[cluster_id] == 1:
-
             subcloud = cloud.select_by_index(idxs)
-            #o3d.visualization.draw_geometries([subcloud])
+            # o3d.visualization.draw_geometries([subcloud])
             try:
                 H = contract_subcloud(subcloud)
 
                 H = nx.relabel_nodes(H, {key: i + len(G) for i, key in enumerate(H.nodes)}, copy=True)
                 G = nx.compose(G, H)
             except:
-                print("didn't work")
-                print(len(idxs))
+                print(f"Contraction failed for cluster ID {cluster_id}")
 
     return G
 
