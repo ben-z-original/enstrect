@@ -66,7 +66,7 @@ class NNUNetS2DSModel(SegmenterInterface):
 if __name__ == "__main__":
     segmenter = NNUNetS2DSModel()
 
-    example_img_path = (Path(__file__).parents[1] / "assets" / "example_image").with_suffix(".png")
+    example_img_path = Path(__file__).parents[1] / "assets" / "example_image.png"
     img_rgb_pyt = read_image(str(example_img_path), mode=ImageReadMode.RGB).to(torch.float32)
 
     probs = segmenter(img_rgb_pyt)

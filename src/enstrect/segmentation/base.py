@@ -46,7 +46,7 @@ class RGBIdentityModel(SegmenterInterface):
 
 if __name__ == "__main__":
     identity_segmenter = RGBIdentityModel()
-    example_img_path = (Path(__file__).parents[1] / "assets" / "example_image").with_suffix(".png")
+    example_img_path = Path(__file__).parents[1] / "assets" / "example_image.png"
     img_rgb_pyt = read_image(str(example_img_path), mode=ImageReadMode.RGB).to(torch.float32)
     probs = identity_segmenter(img_rgb_pyt)
 
