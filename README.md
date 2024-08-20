@@ -1,6 +1,20 @@
 # Enstrect
 
 
+## Citation
+[ArXiV Preprint](https://arxiv.org/abs/2401.03298)
+
+If you find our work useful, kindly cite accordingly:
+```
+@InProceedings{benz2024enstrect,
+    author       = {Benz, Christian and Rodehorst, Volker},
+    title        = {Enstrect: A Stage-based Approach to 2.5D Structural Damage Detection},
+    booktitle    = {TODO: European Conference on Computer Vision--Workshops},
+    year         = {2024},
+    organization = {Springer}
+}
+```
+
 ## Setup
 ### General
 ```
