@@ -15,7 +15,7 @@ class Fuser:
         # apply angle constraint on views
         probabilities[(230 < viewing_conditions.angles) + (viewing_conditions.angles < 130), :] = torch.nan
 
-        aggr = torch.nanmean(probabilities, axis=1)
+        aggr = torch.nanmean(probabilities, dim=1)
 
         # Note: aggr[:, 0] is assumed to be the default/background class, adjust accordingly
         aggr[:, 1:] = torch.nan_to_num(aggr[:, 1:], nan=0.0)
