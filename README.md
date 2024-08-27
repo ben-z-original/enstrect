@@ -1,4 +1,4 @@
-# Enstrect
+# ENSTECT: Enhanced Structural Inspection
 
 
 ## Citation
