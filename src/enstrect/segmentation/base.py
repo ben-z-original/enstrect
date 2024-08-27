@@ -19,7 +19,7 @@ class SegmenterInterface(ABC):
         Setting up the segmentation model.
     __call__:
         Run inference of the model on a rgb image, which is represented as a
-        torch.Tensor of type torch.float32 and shape (3, height, width), i.e. channels-first mode).
+        torch.Tensor of type torch.float32 and shape (3, height, width), i.e. channels-first mode.
         It returns a torch.Tensor of type torch.float32 and shape (num_classes, height, width).
     """
 
