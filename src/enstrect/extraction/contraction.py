@@ -34,7 +34,7 @@ def extract_centerlines(pcd_pynt):
                 H = nx.relabel_nodes(H, {key: i + len(G) for i, key in enumerate(H.nodes)}, copy=True)
                 G = nx.compose(G, H)
             except:
-                print(f"Contraction failed for cluster ID {cluster_id}")
+                raise UserWarning(f"Contraction failed for cluster ID {cluster_id}")
 
     return G
 
