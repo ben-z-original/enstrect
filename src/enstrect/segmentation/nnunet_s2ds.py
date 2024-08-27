@@ -30,7 +30,7 @@ class NNUNetS2DSModel(SegmenterInterface):
         # doẃnload and unzip plan
         zippath = Path(planpath).with_suffix(".zip")
         if not zippath.exists() and not Path(planpath).exists():
-            url = "https://drive.google.com/file/d/1UeXzpH76GYtZtyn2IjhDvD5Qu3u91YcC"
+            url = "https://drive.google.com/uc?id=1UeXzpH76GYtZtyn2IjhDvD5Qu3u91YcC"
             Path(planpath.parent).mkdir(exist_ok=True)
             gdown.download(url, str(zippath), quiet=False)
 
