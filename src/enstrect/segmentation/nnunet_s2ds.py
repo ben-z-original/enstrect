@@ -50,16 +50,14 @@ class NNUNetS2DSModel(SegmenterInterface):
         self.classes = ["background", "crack", "spalling", "corrosion", "efflorescence",
                         "vegetation", "control_point"]
 
-        self.class_weight = torch.tensor([1, 5, 1, 1, 1, 1, 1], dtype=torch.float16)
+        self.class_weight = torch.tensor([1, 20, 1, 1, 1, 1, 1], dtype=torch.float16)
 
     def __call__(self, img: torch.Tensor):
         img = img.to(torch.float32)
-        # img = (img - img.mean((0, 1))) / img.std((0, 1))
         img = Normalize(img.mean((1, 2)), img.std((1, 2)))(img)
         img = img.unsqueeze(1)
         logits = self.predictor.predict_logits_from_preprocessed_data(img).squeeze()
         softmax = torch.nn.functional.softmax(logits.to(torch.float32), dim=0)
-
         return softmax
 
 
@@ -77,6 +75,6 @@ if __name__ == "__main__":
     plt.title("Input Image")
     plt.imshow(img_rgb_pyt.moveaxis(0, -1).to(torch.uint8))
     plt.subplot(122)
-    plt.title("Output (same as input!)")
+    plt.title("Output")
     plt.imshow(argmax)
     plt.show()
