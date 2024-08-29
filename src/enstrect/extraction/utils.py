@@ -5,7 +5,10 @@ from sklearn.cluster import DBSCAN
 
 def prepare_exposed_rebar(pcd_pynt, eps_m=0.01):
     pcd_pynt.points["exposed_rebar"] = pcd_pynt.points["spalling"] + pcd_pynt.points["corrosion"]
-    idxs = np.where(pcd_pynt.points["exposed_rebar"] == 1)[0]
+    idxs = np.nonzero(pcd_pynt.points["exposed_rebar"])[0]
+
+    if len(idxs) == 0:
+        return pcd_pynt
 
     # cluster exposed rebar
     points_pd = pcd_pynt.points.loc[idxs].reset_index(drop=False)
