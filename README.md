@@ -1,6 +1,6 @@
 # ENSTRECT: A Pipeline for Enhanced Structural Inspection
 
-ENSTRECT is a pipeline to perform 2.5D instance segmentation of *structural damages* (crack, corrosion, spalling, and exposed rebar) through *image-level segmentation/detection*, *prediction mapping* from 2D to 3D, and *damage extraction* (centerline and bounding polygon).
+ENSTRECT – short for *<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect</ins>ion* – represents a workflow for 2.5D instance segmentation of *structural damages* (crack, corrosion, spalling, and exposed rebar) through *image-level segmentation/detection*, *prediction mapping* from 2D to 3D, and *damage extraction* (centerline and bounding polygon).
 
 ![Enstrect](https://github.com/user-attachments/assets/94b79295-d3c4-4101-9441-f69dbb8a6ec2)
 
@@ -43,7 +43,7 @@ Note that they are part of a bigger dataset project, which hopefully will be rel
 #### Download
 The segments can be downloaded
 - by running ```python -m enstrect.datasets.download``` (which places the segments correctly in the repo tree) 
-- or from [Google Drive](https://drive.google.com/file/d/1a1zwuuvaDVfmovGbcEsazfxr7OLfusLM/view?usp=sharing) (correct placement in repo tree required, see below).
+- or from [Google Drive](https://drive.google.com/file/d/1QkyoZ1o9uKuxpLIlSZ-iA9jcba46oIwW/view?usp=sharing) (correct placement in repo tree required, see below).
 
 #### Sample Points
 Due to the overly large size of the point clouds for higher object resolutions (one message of the publication), only the reduced point clouds (```pcd_reduced.ply```) are shipped with the download. If you need the point clouds corresponding to the best image resolution, run:
