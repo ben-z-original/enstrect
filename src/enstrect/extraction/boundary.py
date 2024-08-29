@@ -7,17 +7,22 @@ from sklearn.cluster import DBSCAN
 from sklearn.decomposition import PCA
 
 
-def extract_bounding_polygons(pcd_pynt, category="corrosion", eps_m=0.01, min_count=2000):
+def extract_bounding_polygons(pcd_pynt, category="corrosion", eps_m=0.01, min_points=100):
     points_pd = pcd_pynt.points.loc[pcd_pynt.points[category] == 1].reset_index(drop=False)
     points_np = np.array(points_pd[['x', 'y', 'z']], dtype=np.float64)
-
-    cluster = DBSCAN(eps=eps_m, min_samples=20).fit_predict(points_np)
-    cluster_ids, cluster_counts = np.unique(cluster, return_counts=True)
 
     pca = PCA(n_components=2)
     G = nx.Graph()
 
-    for cluster_id in tqdm(cluster_ids):
+    if len(points_np) == 0: return G
+
+    cluster = DBSCAN(eps=eps_m, min_samples=20).fit_predict(points_np)
+    cluster_ids, cluster_counts = np.unique(cluster, return_counts=True)
+    cluster_ids, cluster_counts = cluster_ids[cluster_ids != -1], cluster_counts[cluster_ids != -1]
+
+    for cluster_id, cluster_count in tqdm(list(zip(cluster_ids, cluster_counts))):
+        if cluster_count < min_points:
+            continue
         idxs = np.nonzero(cluster == cluster_id)[0]
 
         points_subcloud = points_np[idxs]
@@ -26,7 +31,7 @@ def extract_bounding_polygons(pcd_pynt, category="corrosion", eps_m=0.01, min_co
             print()
             pcd_o3d = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(points_subcloud))
             o3d.visualization.draw_geometries([pcd_o3d])
-            #subcloud = pcd_o3d.select_by_index(idxs)
+            # subcloud = pcd_o3d.select_by_index(idxs)
 
         # extract boundary
         points_mapped = pca.fit_transform(points_subcloud)

@@ -1,40 +1,42 @@
+import warnings
 import itertools
 import numpy as np
-import open3d as o3d
 from tqdm import tqdm
 import networkx as nx
-from pathlib import Path
 from pc_skeletor import LBC
-from pyntcloud import PyntCloud
+from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import cdist
-from utils3d.conversion.lines import polyline2obj
-from utils3d.visualization.visualize_o3d import plot_o3d_mesh_with_lines
 
 
-def extract_centerlines(pcd_pynt):
-    defect = np.array(pcd_pynt.points["argmax"])
-    cluster = np.array(pcd_pynt.points["cluster"])
-    cluster_ids, cluster_counts = np.unique(cluster, return_counts=True)
-    classes = {c: defect[cluster == c][0] for c in cluster_ids}
-
+def extract_centerlines(pcd_pynt, category="crack", eps_m=0.01, min_points=20):
     cloud = pcd_pynt.to_instance("open3d", mesh=False, normals=True)
-    cloud.paint_uniform_color([0.5, 0.5, 0.5])
+
+    # subcloud from category
+    idxs = np.nonzero(pcd_pynt.points[category])[0]
+    points_pd = pcd_pynt.points.loc[idxs].reset_index(drop=False)
+    points_np = np.array(points_pd[['x', 'y', 'z']], dtype=np.float64)
 
     G = nx.Graph()
-    for i, cluster_id in tqdm(enumerate(cluster_ids[1:])):
-        idxs = np.nonzero(cluster == cluster_id)[0]
+    if len(points_np) == 0: return G
 
-        # crack
-        if classes[cluster_id] == 1:
-            subcloud = cloud.select_by_index(idxs)
-            # o3d.visualization.draw_geometries([subcloud])
-            try:
-                H = contract_subcloud(subcloud)
+    # cluster analysis
+    cluster = DBSCAN(eps=eps_m, min_samples=20).fit_predict(points_np)
+    cluster_ids, cluster_counts = np.unique(cluster, return_counts=True)
+    cluster_ids, cluster_counts = cluster_ids[cluster_ids != -1], cluster_counts[cluster_ids != -1]
 
-                H = nx.relabel_nodes(H, {key: i + len(G) for i, key in enumerate(H.nodes)}, copy=True)
-                G = nx.compose(G, H)
-            except:
-                raise UserWarning(f"Contraction failed for cluster ID {cluster_id}")
+    for (cluster_id, cluster_count) in tqdm(zip(cluster_ids, cluster_counts)):
+        if cluster_count < min_points: continue
+
+        # subcloud of current cluster
+        idxs_cluster = idxs[np.nonzero(cluster == cluster_id)[0]]
+        subcloud = cloud.select_by_index(idxs_cluster)
+        try:
+            H = contract_subcloud(subcloud)
+            H = nx.relabel_nodes(H, {key: i + len(G) for i, key in enumerate(H.nodes)}, copy=True)
+            G = nx.compose(G, H)
+        except:
+            warnings.warn(f"Contraction failed for cluster ID {cluster_id}")
+            #print(f"Contraction failed for cluster ID {cluster_id}")#raise UserWarning(f"Contraction failed for cluster ID {cluster_id}")
 
     return G
 
@@ -43,10 +45,10 @@ def contract_subcloud(subcloud):
     # init Laplacian-based contraction
     lbc = LBC(point_cloud=subcloud,
               down_sample=0.002,
-              init_contraction=5.,
+              init_contraction=1.,
               init_attraction=1.,
-              max_contraction=2048,
-              max_attraction=1024,
+              max_contraction=256, #2048,
+              max_attraction=2048, #1024,
               step_wise_contraction_amplification='auto',
               termination_ratio=0.003,
               max_iteration_steps=20,
@@ -80,14 +82,3 @@ def contract_subcloud(subcloud):
         G.remove_node(furc_node)
 
     return G
-
-
-if __name__ == "__main__":
-    clustered_path = "/media/chrisbe/backup/segments/bridge_b/segment1/cloud/cloud_tmp2.ply"
-    cloud = PyntCloud.from_file(str(clustered_path))
-
-    G = extract_centerlines(cloud)
-
-    polyline2obj(G, Path("/media/chrisbe/backup/segments/bridge_b/segment1/cloud/"), 0)
-    mesh = o3d.io.read_triangle_mesh("/media/chrisbe/backup/segments/bridge_b/segment1/model.obj", True)
-    plot_o3d_mesh_with_lines(mesh, G)
