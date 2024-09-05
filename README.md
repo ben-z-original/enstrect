@@ -1,4 +1,4 @@
-# ENSTRECT: A Pipeline for Enhanced Structural Inspection
+# ENSTRECT: A Pipeline for Enhancing Structural Inspection
 
 ENSTRECT – short for **<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect</ins>ion** – represents a workflow for 2.5D instance segmentation of **structural damages** (crack, spalling, corrosion, and exposed rebar) through *image-level segmentation/detection*, *prediction mapping* from 2D to 3D, and *damage extraction* (centerline and bounding polygon).
 
