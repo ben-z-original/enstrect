@@ -57,7 +57,7 @@ Since points clouds for higher object resolutions – as required for cracks –
 #### Custom Data
 To apply ENSTRECT to your own data, you will need to make sure that your mesh (or point cloud) lives in a reasonable metric space (the unit is meters). If not the manually set parameters for clustering and contraction will necessarily fail. 
 
-Furthermore, you will need to convert your camera information (both intrinsic and extrinsic parameters) into the ```cameras.json``` format. Since there isn't a universal standard for camera representation (something the computer vision community should imo address), this format is custom but designed to be as intuitive as possible. It directly supports camera parameters that are compatible with PyTorch3D.
+Furthermore, you will need to convert your camera information (both intrinsic and extrinsic parameters) into the ```cameras.json``` format. Since there isn't a universal standard for camera representation (something the computer vision community could address), this format is custom but designed to be as intuitive as possible. It directly supports camera parameters that are compatible with PyTorch3D.
 
 If you're using camera data from Metashape, the XML file must be converted into the required JSON format. You can find the conversion script here [TODO]. For users of COLMAP, this helpful repository [Link] could provide support for creating a custom converter.
 
