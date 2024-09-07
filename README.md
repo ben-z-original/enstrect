@@ -7,8 +7,7 @@ ENSTRECT – short for **<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect<
 #### Example Outputs
 | Bridge B, Test Segment | Bridge G, Test Segment |
 |-|-|
-| <img src="https://github.com/user-attachments/assets/cbe78604-07f1-433d-944d-72679e110816" width=49%> | ![results](https://github.com/user-attachments/assets/cbe78604-07f1-433d-944d-72679e110816) |
-
+| <img src="https://github.com/user-attachments/assets/b18e7152-913d-409b-b7df-707ee0555633" width=100%> | <img src="https://github.com/user-attachments/assets/a6873d0d-9fb1-4771-916b-e4cdfebce85a" width=100%> |
 
 ## Citation
 [ArXiV Preprint](https://arxiv.org/abs/2401.03298)
