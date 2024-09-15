@@ -1,4 +1,4 @@
-# ENSTRECT: A Pipeline for Enhanced Structural Inspection
+# ENSTRECT: A Pipeline for Enhancing Structural Inspection
 
 ENSTRECT – short for **<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect</ins>ion** – represents a workflow for 2.5D instance segmentation of **structural damages** (crack, spalling, corrosion, and exposed rebar) through *image-level segmentation/detection*, *prediction mapping* from 2D to 3D, and *damage extraction* (centerline and bounding polygon).
 
@@ -7,8 +7,7 @@ ENSTRECT – short for **<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect<
 #### Example Outputs
 | Bridge B, Test Segment | Bridge G, Test Segment |
 |-|-|
-| <img src="https://github.com/user-attachments/assets/cbe78604-07f1-433d-944d-72679e110816" width=49%> | ![results](https://github.com/user-attachments/assets/cbe78604-07f1-433d-944d-72679e110816) |
-
+| <img src="https://github.com/user-attachments/assets/b18e7152-913d-409b-b7df-707ee0555633" width=100%> | <img src="https://github.com/user-attachments/assets/a6873d0d-9fb1-4771-916b-e4cdfebce85a" width=100%> |
 
 ## Citation
 [ArXiV Preprint](https://arxiv.org/abs/2401.03298)
@@ -54,6 +53,13 @@ Since points clouds for higher object resolutions – as required for cracks –
 - ```python -m enstrect.datasets.utils.sample_points``` for the Bridge B, test segment.
 - ```python -m enstrect.datasets.utils.sample_points --help``` for information about the right command line arguments.
 
+#### Custom Data
+To apply ENSTRECT to your own data, you will need to make sure that your mesh (or point cloud) lives in a reasonable metric space (the unit is meters). If not the manually set parameters for clustering and contraction will necessarily fail. 
+
+Furthermore, you will need to convert your camera information (both intrinsic and extrinsic parameters) into the ```cameras.json``` format. Since there isn't a universal standard for camera representation (something the computer vision community could address), this format is custom but designed to be as intuitive as possible. It directly supports camera parameters that are compatible with PyTorch3D.
+
+If you're using camera data from Metashape, the XML file must be converted into the required JSON format. You can find the conversion script here [TODO]. For users of COLMAP, this helpful repository [Link] could provide support for creating a custom converter.
+
 ## Segmentation Model
 Three models for structural damage/crack segmentation were investigated in this work. 
 The first one is shipped with this repo, the others can be found in the respective repos:
@@ -92,6 +98,8 @@ For running the example, it must be corretly placed in the ```assets``` folder i
 
 
 ### Exposed Rebar
+
+
 
 # References
 
