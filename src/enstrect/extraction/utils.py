@@ -4,6 +4,9 @@ from sklearn.cluster import DBSCAN
 
 
 def prepare_exposed_rebar(pcd_pynt, eps_m=0.01):
+    if not "spalling" in pcd_pynt.points.columns or not "corrosion" in pcd_pynt.points.columns:
+        return pcd_pynt
+
     pcd_pynt.points["exposed_rebar"] = pcd_pynt.points["spalling"] + pcd_pynt.points["corrosion"]
     idxs = np.nonzero(pcd_pynt.points["exposed_rebar"])[0]
 

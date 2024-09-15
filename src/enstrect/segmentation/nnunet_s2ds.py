@@ -47,10 +47,10 @@ class NNUNetS2DSModel(SegmenterInterface):
 
         self.predictor.network.eval()
 
-        self.classes = ["background", "crack", "spalling", "corrosion", "efflorescence",
-                        "vegetation", "control_point"]
+        self.classes = ["background", "crack", "spalling", "corrosion",
+                        "efflorescence", "vegetation", "control_point"]
 
-        self.class_weight = torch.tensor([1, 20, 1, 1, 1, 1, 1], dtype=torch.float16)
+        self.class_weight = torch.tensor([1, 10, 4, 1, 1, 1, 1], dtype=torch.float16)
 
     def __call__(self, img: torch.Tensor):
         img = img.to(torch.float32)

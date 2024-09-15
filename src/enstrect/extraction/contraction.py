@@ -8,7 +8,7 @@ from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import cdist
 
 
-def extract_centerlines(pcd_pynt, category="crack", eps_m=0.01, min_points=20):
+def extract_centerlines(pcd_pynt, category="crack", eps_m=0.02, min_points=20):
     cloud = pcd_pynt.to_instance("open3d", mesh=False, normals=True)
 
     # subcloud from category
@@ -36,7 +36,6 @@ def extract_centerlines(pcd_pynt, category="crack", eps_m=0.01, min_points=20):
             G = nx.compose(G, H)
         except:
             warnings.warn(f"Contraction failed for cluster ID {cluster_id}")
-            #print(f"Contraction failed for cluster ID {cluster_id}")#raise UserWarning(f"Contraction failed for cluster ID {cluster_id}")
 
     return G
 
@@ -44,14 +43,14 @@ def extract_centerlines(pcd_pynt, category="crack", eps_m=0.01, min_points=20):
 def contract_subcloud(subcloud):
     # init Laplacian-based contraction
     lbc = LBC(point_cloud=subcloud,
-              down_sample=0.002,
-              init_contraction=1.,
-              init_attraction=1.,
-              max_contraction=256, #2048,
-              max_attraction=2048, #1024,
+              down_sample=0.001,
+              init_contraction=10., #1.,
+              init_attraction=10., #1.,
+              max_contraction=32,
+              max_attraction=2048,
               step_wise_contraction_amplification='auto',
               termination_ratio=0.003,
-              max_iteration_steps=20,
+              max_iteration_steps=20, #20,
               filter_nb_neighbors=20,
               filter_std_ratio=2.0,
               )
@@ -76,7 +75,7 @@ def contract_subcloud(subcloud):
     for furc_node in furcations:
         neighs = list(G.neighbors(furc_node))
         for i, neigh in enumerate(neighs):
-            G.add_node(np.max(G.nodes) + 1, pos=G.nodes[furc_node]['pos'])
+            G.add_node(np.max(G.nodes) + 1, pos=G.nodes[furc_node]["pos"])
             G.add_edge(np.max(G.nodes), neigh)
             G.remove_edge(furc_node, neigh)
         G.remove_node(furc_node)

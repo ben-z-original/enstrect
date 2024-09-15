@@ -5,9 +5,13 @@ from tqdm import tqdm
 import networkx as nx
 from sklearn.cluster import DBSCAN
 from sklearn.decomposition import PCA
+from shapely.geometry.multipolygon import MultiPolygon
 
 
 def extract_bounding_polygons(pcd_pynt, category="corrosion", eps_m=0.01, min_points=100):
+    if not category in pcd_pynt.points.columns:
+        return nx.Graph()
+
     points_pd = pcd_pynt.points.loc[pcd_pynt.points[category] == 1].reset_index(drop=False)
     points_np = np.array(points_pd[['x', 'y', 'z']], dtype=np.float64)
 
@@ -36,18 +40,22 @@ def extract_bounding_polygons(pcd_pynt, category="corrosion", eps_m=0.01, min_po
         # extract boundary
         points_mapped = pca.fit_transform(points_subcloud)
         alpha_shape = alphashape.alphashape(points_mapped, 100)
-        bound_coords = np.array(alpha_shape.boundary.coords)
-        bound_idxs = [np.where((points_mapped == bound_coords[i, ...]).all(axis=1))[0][0]
-                      for i in range(len(bound_coords))]
-        bound_points = points_subcloud[bound_idxs[:-1]]
 
-        # prepare graph
-        H = nx.Graph()
-        edges = [(i - 1, i) for i in range(1, len(bound_points))] + [(len(bound_points) - 1, 0)]
-        H.add_edges_from(edges)
-        nx.set_node_attributes(H, {i: bound_points[i] for i in range(len(bound_points))}, "pos")
+        geoms = alpha_shape.geoms if isinstance(alpha_shape, MultiPolygon) else [alpha_shape]
 
-        H = nx.relabel_nodes(H, {key: i + len(G) for i, key in enumerate(H.nodes)}, copy=True)
-        G = nx.compose(G, H)
+        for geom in geoms:
+            bound_coords = np.array(geom.boundary.coords)
+            bound_idxs = [np.where((points_mapped == bound_coords[i, ...]).all(axis=1))[0][0]
+                          for i in range(len(bound_coords))]
+            bound_points = points_subcloud[bound_idxs[:-1]]
+
+            # prepare graph
+            H = nx.Graph()
+            edges = [(i - 1, i) for i in range(1, len(bound_points))] + [(len(bound_points) - 1, 0)]
+            H.add_edges_from(edges)
+            nx.set_node_attributes(H, {i: bound_points[i] for i in range(len(bound_points))}, "pos")
+
+            H = nx.relabel_nodes(H, {key: i + len(G) for i, key in enumerate(H.nodes)}, copy=True)
+            G = nx.compose(G, H)
 
     return G
