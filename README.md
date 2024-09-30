@@ -28,6 +28,7 @@ If you find our work useful, kindly cite accordingly:
 #### General
 ```
 git clone https://github.com/ben-z-original/enstrect.git
+cd enstrect
 conda create --name enstrect python=3.10
 conda activate enstrect
 pip install -e .
