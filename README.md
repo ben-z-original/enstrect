@@ -50,11 +50,6 @@ The segments can be downloaded:
 - by running ```python -m enstrect.datasets.utils.download``` (which places the segments correctly in the repo tree) 
 - or from [Google Drive](https://drive.google.com/file/d/1QkyoZ1o9uKuxpLIlSZ-iA9jcba46oIwW/view?usp=sharing) (correct placement in repo tree required, see below).
 
-#### Mesh and Point Sampling
-Since points clouds for higher object resolutions – as required for cracks – become overly large, only the textured meshes are provided with the above download. The examples below automatically sample points from these meshes, which are then processed by ENSTRECT. If you need high-resolution point clouds corresponding to the best image resolution, run:
-- ```python -m enstrect.datasets.utils.sample_points``` for the Bridge B, test segment.
-- ```python -m enstrect.datasets.utils.sample_points --help``` for information about the right command line arguments.
-
 #### Custom Data
 To apply ENSTRECT to your own data, you will need to make sure that your mesh (or point cloud) lives in a reasonable metric space (the unit is meters). If not the manually set parameters for clustering and contraction will necessarily fail. 
 
