@@ -64,13 +64,13 @@ The first one is shipped with this repo, the others can be found in the respecti
 - **TopoCrack**: refer to repo [[Link](https://github.com/eesd-epfl/topo_crack_detection)]
 - **DetectionHMA**: refer to repo [[Link](https://github.com/ben-z-original/detectionhma)]
 
-The *nnU-Net-S2DS* segmentation model is supposed to be downloaded automatically when running the examples. Otherwise it can be found here [Google Drive](https://drive.google.com/file/d/1UeXzpH76GYtZtyn2IjhDvD5Qu3u91YcC/view?usp=sharing) and needs to be placed under ```src/enstrect/segmentation/checkpoints```.
+The *nnU-Net-S2DS* segmentation model is downloaded automatically when running the examples. Otherwise the weights can be found here [Google Drive](https://drive.google.com/file/d/1UeXzpH76GYtZtyn2IjhDvD5Qu3u91YcC/view?usp=sharing) and need to be placed under ```src/enstrect/segmentation/checkpoints```.
 
 The image-level output of running *nnU-Net-S2DS* on the provided ```example_image.png``` look as follows:
 ```bash
 python -m enstrect.segmentation.nnunet_s2ds
 ```
-![example_result](https://github.com/user-attachments/assets/b3c5215e-62c0-4ceb-a2d5-c2a3146b4eae)
+![example_result](https://github.com/user-attachments/assets/ec142f18-2295-4dbc-9a3d-94232bf3d8bf)
 
 
 Any other segmentation model can be used with ENSTRECT after being correctly wrapped into the ```SegmenterInterface```, 
