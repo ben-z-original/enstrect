@@ -24,6 +24,11 @@ keywords = [
     'semantic segmentation',
     'crack segmentation',
     'crack detection',
+    'structural damage detection',
+    '3D crack detection',
+    '2.5D crack detection',
+    '3D structural damage detection',
+    '2.5D structural damage detection'
 ]
 
 dynamic = ["dependencies"]
