@@ -47,7 +47,7 @@ Publicly available data for 2.5D or 3D structural damage detection is scarce to 
 
 #### Download
 The segments can be downloaded:
-- by running ```python -m enstrect.datasets.download``` (which places the segments correctly in the repo tree) 
+- by running ```python -m enstrect.datasets.utils.download``` (which places the segments correctly in the repo tree) 
 - or from [Google Drive](https://drive.google.com/file/d/1QkyoZ1o9uKuxpLIlSZ-iA9jcba46oIwW/view?usp=sharing) (correct placement in repo tree required, see below).
 
 #### Mesh and Point Sampling
