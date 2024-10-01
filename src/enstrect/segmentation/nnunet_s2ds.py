@@ -1,6 +1,7 @@
 import torch
 import gdown
 import zipfile
+import warnings
 import matplotlib
 from pathlib import Path
 from matplotlib import pyplot as plt
@@ -8,6 +9,8 @@ from torchvision.transforms import Normalize
 from torchvision.io import read_image, ImageReadMode
 from enstrect.segmentation.base import SegmenterInterface
 from nnunetv2.inference.predict_from_raw_data import nnUNetPredictor
+
+warnings.filterwarnings("ignore", message="Detected old nnU-Net plans")  # warning can be ignored
 
 
 class NNUNetS2DSModel(SegmenterInterface):
