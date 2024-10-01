@@ -53,7 +53,7 @@ The segments can be downloaded:
 #### Custom Data
 To apply ENSTRECT to your own data, you will need to make sure that your mesh (or point cloud) lives in a reasonable metric space (the unit is meters). If not, extraction will fail due to unsuited parameters for clustering and contraction. 
 
-Furthermore, you will need to convert your camera information (both intrinsic and extrinsic parameters) into the ```cameras.json``` format. Since there isn't a universal standard for camera representation, this format is custom but designed to be as intuitive as possible. It directly supports camera parameters that are compatible with PyTorch3D. 
+Furthermore, you will need to convert your camera information (both intrinsic and extrinsic parameters) into the ```cameras.json``` format. Since there isn't a universal standard for camera representation, this format is custom but intuitive. It directly supports camera parameters that are compatible with PyTorch3D. If you use Metashape, COLMAP, etc. you need to transform the cameras in the PyTorch3D compatible format.
 
 For *Bridge G (dev)* the beginning of the ```cameras.json``` looks like:
 ```python
@@ -121,7 +121,7 @@ The image-level output of running *nnU-Net-S2DS* on the provided ```example_imag
 ```bash
 python -m enstrect.segmentation.nnunet_s2ds
 ```
-![example_result](https://github.com/user-attachments/assets/ec142f18-2295-4dbc-9a3d-94232bf3d8bf)
+![example_result](https://github.com/user-attachments/assets/24754c4f-41cc-4251-a8bf-90075146fe8e)
 
 
 Any other segmentation model can be used with ENSTRECT after being correctly wrapped into the ```SegmenterInterface```, 
