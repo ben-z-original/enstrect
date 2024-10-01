@@ -10,8 +10,6 @@ ENSTRECT – short for **<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect<
 | <img src="https://github.com/user-attachments/assets/b18e7152-913d-409b-b7df-707ee0555633" width=100%> | <img src="https://github.com/user-attachments/assets/a6873d0d-9fb1-4771-916b-e4cdfebce85a" width=100%> |
 
 ## Citation
-[ArXiV Preprint](https://arxiv.org/abs/2401.03298)
-
 If you find our work useful, kindly cite accordingly:
 ```
 @InProceedings{benz2024enstrect,
@@ -43,19 +41,70 @@ PyTorch3D installation can be tricky. This especially refers to the alignment of
 - Pytorch3D 0.7.7
 
 ## Data
-Publicly available data for 2.5D or 3D structural damage detection is scarce to non-existent. Thus, we were glad to have four segments from real structures (two for *Bridge B* and two for *Bridge G*) for experimentations. Note that they are supposed to be part of a bigger dataset project, which hopefully will be released some day soon.
+Publicly available data for 2.5D or 3D structural damage detection is scarce to non-existent. Thus, we were glad to have four segments from real structures (two for *Bridge B* and two for *Bridge G*) for experimentations.
 
 #### Download
 The segments can be downloaded:
-- by running ```python -m enstrect.datasets.utils.download``` (which places the segments correctly in the repo tree) 
+- by running ```python -m enstrect.datasets.download``` (which places the segments correctly in the repo tree) 
 - or from [Google Drive](https://drive.google.com/file/d/1QkyoZ1o9uKuxpLIlSZ-iA9jcba46oIwW/view?usp=sharing) (correct placement in repo tree required, see below).
 
 #### Custom Data
-To apply ENSTRECT to your own data, you will need to make sure that your mesh (or point cloud) lives in a reasonable metric space (the unit is meters). If not the manually set parameters for clustering and contraction will necessarily fail. 
+To apply ENSTRECT to your own data, you will need to make sure that your mesh (or point cloud) lives in a reasonable metric space (the unit is meters). If not, extraction will fail due to unsuited parameters for clustering and contraction. 
 
-Furthermore, you will need to convert your camera information (both intrinsic and extrinsic parameters) into the ```cameras.json``` format. Since there isn't a universal standard for camera representation (something the computer vision community could address), this format is custom but designed to be as intuitive as possible. It directly supports camera parameters that are compatible with PyTorch3D.
+Furthermore, you will need to convert your camera information (both intrinsic and extrinsic parameters) into the ```cameras.json``` format. Since there isn't a universal standard for camera representation, this format is custom but intuitive. It directly supports camera parameters that are compatible with PyTorch3D. If you use Metashape, COLMAP, etc. you need to transform the cameras in the PyTorch3D compatible format.
 
-If you're using camera data from Metashape, the XML file must be converted into the required JSON format. You can find the conversion script here [TODO]. For users of COLMAP, this helpful repository [Link] could provide support for creating a custom converter.
+For *Bridge G (dev)* the beginning of the ```cameras.json``` looks like:
+```python
+{
+  "0000": {
+    "focal_length": [
+      [
+        11568.5576171875,
+        11568.5576171875
+      ]
+    ],
+    "principal_point": [
+      [
+        3746.271728515625,
+        2372.466064453125
+      ]
+    ],
+    "image_size": [
+      [
+        4912.0,
+        7360.0
+      ]
+    ],
+    "R": [
+      [
+        [
+          -0.8191599249839783,
+          -0.027572205290198326,
+          -0.5729021430015564
+        ],
+        [
+          -0.013821378350257874,
+          0.9995027780532837,
+          -0.02834092080593109
+        ],
+        [
+          0.5733987092971802,
+          -0.01529744639992714,
+          -0.8191335797309875
+        ]
+      ]
+    ],
+    "T": [
+      [
+        0.5004259943962097,
+        0.7711246609687805,
+        3.7751145362854004
+      ]
+    ],
+    "in_ndc": false
+  },
+  "0001": ...
+```
 
 ## Segmentation Model
 Three models for structural damage/crack segmentation were investigated in this work. 
@@ -64,13 +113,13 @@ The first one is shipped with this repo, the others can be found in the respecti
 - **TopoCrack**: refer to repo [[Link](https://github.com/eesd-epfl/topo_crack_detection)]
 - **DetectionHMA**: refer to repo [[Link](https://github.com/ben-z-original/detectionhma)]
 
-The *nnU-Net-S2DS* segmentation model is supposed to be downloaded automatically when running the examples. Otherwise it can be found here [Google Drive](https://drive.google.com/file/d/1UeXzpH76GYtZtyn2IjhDvD5Qu3u91YcC/view?usp=sharing) and needs to be placed under ```src/enstrect/segmentation/checkpoints```.
+The *nnU-Net-S2DS* segmentation model is downloaded automatically when running the examples. Otherwise the weights can be found here [Google Drive](https://drive.google.com/file/d/1UeXzpH76GYtZtyn2IjhDvD5Qu3u91YcC/view?usp=sharing) and need to be placed under ```src/enstrect/segmentation/checkpoints```.
 
 The image-level output of running *nnU-Net-S2DS* on the provided ```example_image.png``` look as follows:
 ```bash
 python -m enstrect.segmentation.nnunet_s2ds
 ```
-![example_result](https://github.com/user-attachments/assets/b3c5215e-62c0-4ceb-a2d5-c2a3146b4eae)
+![example_result](https://github.com/user-attachments/assets/24754c4f-41cc-4251-a8bf-90075146fe8e)
 
 
 Any other segmentation model can be used with ENSTRECT after being correctly wrapped into the ```SegmenterInterface```, 
