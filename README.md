@@ -7,7 +7,7 @@ ENSTRECT – short for **<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect<
 #### Example Outputs
 | Bridge B, Test Segment | Bridge G, Test Segment |
 |-|-|
-| <img src="https://github.com/user-attachments/assets/b18e7152-913d-409b-b7df-707ee0555633" width=100%> | <img src="https://github.com/user-attachments/assets/a6873d0d-9fb1-4771-916b-e4cdfebce85a" width=100%> |
+| <img src="https://github.com/user-attachments/assets/cc4ae4b5-46a7-4f21-9ba5-288f338c197d" width=100%> | <img src="https://github.com/user-attachments/assets/5a6c6b74-d500-4e9e-9cb3-deaf048c6d2f" width=100%> |
 
 ## Citation
 If you find our work useful, kindly cite accordingly:
@@ -160,6 +160,7 @@ python -m enstrect.run \
     --out_dir src/enstrect/assets/segments/bridge_g/segment_test/out \
     --scale 0.5
 ```
+For demonstration of the ```scale``` parameter, a scale of 0.5 was set.
 
 
 # References
