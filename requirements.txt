@@ -1,7 +1,13 @@
-torch
+setuptools==64.0.3
+numpy==1.26.4
 nnunetv2 @ git+https://github.com/MIC-DKFZ/nnUNet.git@v2.5.1
-pytorch3d @ git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7
+#pytorch3d @ git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7
 gdown
 torchvision==0.19.1
 tensordict
 addict
+open3d
+pyntcloud
+pc-skeletor==1.0.0
+alphashape
+pyvista
