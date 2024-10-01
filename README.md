@@ -24,13 +24,13 @@ If you find our work useful, kindly cite accordingly:
 
 ## Installation
 #### General
-```
+``` bash
 git clone https://github.com/ben-z-original/enstrect.git
 cd enstrect
 conda create --name enstrect python=3.10
 conda activate enstrect
-pip install torch
 pip install -e .
+pip install git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7  # needs knowledge about installed torch version
 ```
 
 #### PyTorch3D Issues
@@ -65,14 +65,14 @@ For *Bridge G (dev)* the beginning of the ```cameras.json``` looks like:
     ],
     "principal_point": [
       [
-        3746.271728515625,
-        2372.466064453125
+        3746.271728515625,  # ~width/2 (swapped compared to image_size; PyTorch3D convention)
+        2372.466064453125   # ~height/2 
       ]
     ],
     "image_size": [
       [
-        4912.0,
-        7360.0
+        4912.0,             # height
+        7360.0              # width
       ]
     ],
     "R": [
@@ -141,14 +141,28 @@ For running the example, it must be corretly placed in the ```assets``` folder i
 ```
 
 ### Cracks
+For running the *Bridge B (test)* example execute (the paths to the mesh are stored in the defaults):
+``` bash
+python -m enstrect.run
+```
+Note that by default the image resolution is reduced to 0.25 compared to the original scale for faster (exemplary) processing. For best quality run at 1.0 image resolution, which naturally takes longer.
+
+The results are stored in the ```assets/segments/bridge_b/segment_test/out``` directory. They contain class-wise ```obj``` files with the extracted medial axis or boundaries and a ```ply``` point cloud with attributes such as *crack*, *spalling*, etc. Both you can visualized with, e.g., [CloudCompare](https://cloudcompare-org.danielgm.net/release/).
 
 
 ### Exposed Rebar
-
+For running the *Bridge G (test)* segment execute (from the repository's root path):
+```bash
+python -m enstrect.run \
+    --obj_or_ply_path src/enstrect/assets/segments/bridge_g/segment_test/mesh/mesh.obj \
+    --images_dir src/enstrect/assets/segments/bridge_g/segment_test/views \
+    --cameras_path src/enstrect/assets/segments/bridge_g/segment_test/cameras.json \
+    --out_dir src/enstrect/assets/segments/bridge_g/segment_test/out \
+    --scale 0.5
+```
 
 
 # References
-
 ```
 @inproceedings{benz2022image,
    author =    {Christian Benz and Volker Rodehorst},
