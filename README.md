@@ -10,8 +10,6 @@ ENSTRECT – short for **<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect<
 | <img src="https://github.com/user-attachments/assets/b18e7152-913d-409b-b7df-707ee0555633" width=100%> | <img src="https://github.com/user-attachments/assets/a6873d0d-9fb1-4771-916b-e4cdfebce85a" width=100%> |
 
 ## Citation
-[ArXiV Preprint](https://arxiv.org/abs/2401.03298)
-
 If you find our work useful, kindly cite accordingly:
 ```
 @InProceedings{benz2024enstrect,
