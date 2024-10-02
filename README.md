@@ -34,7 +34,7 @@ pip install git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7  # need
 ```
 
 #### PyTorch3D Issues
-PyTorch3D installation can be tricky. This especially refers to the alignment of versions of CUDA, PyTorch, and PyTorch3D. The configuration that worked in the project is:
+PyTorch3D installation can be tricky. This especially refers to the alignment of versions of CUDA, PyTorch, and PyTorch3D. The configuration that was working in the project is:
 - Ubuntu 20.04
 - CUDA 12.1 with NVIDIA GeForce RTX 2080 Ti
 - PyTorch 2.4.0
