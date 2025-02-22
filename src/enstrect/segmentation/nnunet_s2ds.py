@@ -62,7 +62,8 @@ class NNUNetS2DSModel(SegmenterInterface):
         img = img.unsqueeze(1)
         logits = self.predictor.predict_logits_from_preprocessed_data(img).squeeze()
         softmax = torch.nn.functional.softmax(logits.to(torch.float32), dim=0)
-        return softmax
+        argmax = torch.argmax(logits, dim=0).to(torch.uint8)
+        return softmax, argmax
 
 
 if __name__ == "__main__":
@@ -75,8 +76,7 @@ if __name__ == "__main__":
 
     img_rgb_pyt = read_image(str(args.image_path), mode=ImageReadMode.RGB).to(torch.float32)
 
-    probs = segmenter(img_rgb_pyt)
-    argmax = torch.argmax(probs, dim=0)
+    probs, argmax = segmenter(img_rgb_pyt)
 
     matplotlib.use("TkAgg")  # required since nnunet uses non-gui backend
     plt.subplot(121)
