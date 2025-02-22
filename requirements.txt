@@ -1,8 +1,8 @@
 setuptools>=70.0.0  # ==64.0.3
-numpy==1.26.4
-nnunetv2 @ git+https://github.com/MIC-DKFZ/nnUNet.git@v2.5.1
+nnunetv2 @ git+https://github.com/MIC-DKFZ/nnUNet.git@v2.5.2
 #pytorch3d @ git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7
-gdown
+gdown==5.2.0
+numpy==1.26.4
 torchvision==0.19.1
 tensordict
 addict
