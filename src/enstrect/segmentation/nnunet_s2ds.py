@@ -4,6 +4,7 @@ import zipfile
 import warnings
 import matplotlib
 from pathlib import Path
+from argparse import ArgumentParser
 from matplotlib import pyplot as plt
 from torchvision.transforms import Normalize
 from torchvision.io import read_image, ImageReadMode
@@ -65,11 +66,14 @@ class NNUNetS2DSModel(SegmenterInterface):
 
 
 if __name__ == "__main__":
+    parser = ArgumentParser(description="""Run nnU-Net-S2DS for image-level segmention of structural damage.""")
+    parser.add_argument('image_path', nargs='?', type=Path,
+                        default=Path(__file__).parents[1] / "assets" / "example_image.jpg",
+                        help="Path to the image to be processed.")
+    args = parser.parse_args()
     segmenter = NNUNetS2DSModel()
 
-    example_img_path = Path(__file__).parents[1] / "assets" / "example_image.jpg"
-    print(example_img_path)
-    img_rgb_pyt = read_image(str(example_img_path), mode=ImageReadMode.RGB).to(torch.float32)
+    img_rgb_pyt = read_image(str(args.image_path), mode=ImageReadMode.RGB).to(torch.float32)
 
     probs = segmenter(img_rgb_pyt)
     argmax = torch.argmax(probs, dim=0)
