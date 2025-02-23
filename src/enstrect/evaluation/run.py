@@ -7,11 +7,15 @@ from enstrect.evaluation.metrics import G_to_clCloudIoU
 from enstrect.evaluation.utils.lines import obj_to_G, G_to_lineset_o3d, G_to_linemesh_o3d, interpolate_G
 
 
-def evaluate(segment_path, damage, vis=True, tolerances=[0.005, 0.01, 0.02, 0.04, 0.08],
+def evaluate(segment_path, damages, vis=True, tolerances=[0.005, 0.01, 0.02, 0.04, 0.08],
              tex_path=None):
+
+    # damages to list if only one damage is given
+    damages = [damages] if not isinstance(damages, list) else damages
+
     # prepare graphs
     G_true, G_pred = nx.Graph(), nx.Graph()
-    for damage in args.damage:
+    for damage in damages:
         true_path = segment_path / "annotations" / f"{damage}.obj"
         pred_path = segment_path / "out" / f"{damage}.obj"
 
@@ -57,7 +61,6 @@ if __name__ == "__main__":
     parser.add_argument('--vis', action='store_true', help="Enable visualization")
     args = parser.parse_args()
 
-    args.damage = [args.damage] if len(args.damage) == 1 else args.damage
     segment_path = args.datadir / args.structure / args.segment
 
     evaluate(segment_path, args.damage, vis=args.vis, tex_path=None)
