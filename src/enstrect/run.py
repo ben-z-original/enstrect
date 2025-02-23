@@ -55,7 +55,7 @@ def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_po
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="""Run enstrect for segmenting, mapping, and extraction structural damage.""")
+    parser = ArgumentParser(description="""Run enstrect for segmenting, mapping, and extracting structural damage.""")
     parser.add_argument('-p', '--obj_or_ply_path', type=Path,
                         default=Path(__file__).parent / "assets" / "segments" / "bridge_b" /
                                 "segment_test" / "mesh" / "mesh.obj",
