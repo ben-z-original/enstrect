@@ -22,7 +22,7 @@ if __name__ == "__main__":
                         default=Path(__file__).parents[1] / "assets",
                         help="Directory where the dataset will be downloaded and unzipped.")
     args = parser.parse_args()
-    
+
     download(name="segments",
              url="https://drive.google.com/uc?id=1QkyoZ1o9uKuxpLIlSZ-iA9jcba46oIwW",
              target_path=args.target_path)
