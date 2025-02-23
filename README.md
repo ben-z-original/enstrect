@@ -27,10 +27,13 @@ If you find our work useful, kindly cite accordingly:
 ## Installation
 #### General
 ``` bash
-git clone https://github.com/ben-z-original/enstrect.git
-cd enstrect
+# create and activate conda environment
 conda create --name enstrect python=3.10
 conda activate enstrect
+
+# clone and install repository
+git clone https://github.com/ben-z-original/enstrect.git
+cd enstrect
 pip install -e .
 pip install git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7  # needs knowledge about installed torch version
 ```
@@ -39,7 +42,7 @@ pip install git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7  # need
 PyTorch3D installation can be tricky. This especially refers to the alignment of versions of CUDA, PyTorch, and PyTorch3D. The configuration that was working in the project is:
 - Ubuntu 20.04
 - CUDA 12.1 with NVIDIA GeForce RTX 2080 Ti
-- PyTorch 2.4.0
+- PyTorch 2.4.1
 - Pytorch3D 0.7.7
 
 ## Data
