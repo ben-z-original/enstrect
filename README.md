@@ -27,10 +27,13 @@ If you find our work useful, kindly cite accordingly:
 ## Installation
 #### General
 ``` bash
-git clone https://github.com/ben-z-original/enstrect.git
-cd enstrect
+# create and activate conda environment
 conda create --name enstrect python=3.10
 conda activate enstrect
+
+# clone and install repository
+git clone https://github.com/ben-z-original/enstrect.git
+cd enstrect
 pip install -e .
 pip install git+https://github.com/facebookresearch/pytorch3d.git@v0.7.7  # needs knowledge about installed torch version
 ```
