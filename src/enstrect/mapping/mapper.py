@@ -39,7 +39,7 @@ class Mapper:
             coords[viewing_conditions.visible[:, i] != 1, :] *= 0
 
             # probabilities
-            soft = self.model(sample["image"])
+            soft = self.model(sample["image"])[0]
 
             if False:
                 matplotlib.use("TkAgg")

@@ -17,7 +17,8 @@ from enstrect.datasets.utils import sample_points_from_meshes_pyt3d
 warnings.filterwarnings("ignore", message="Detected old nnU-Net plans")  # warning can be ignored
 
 
-def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_points, scale):
+def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_points, scale,
+        model=NNUNetS2DSModel, fuser=Fuser):
     # create outdir
     out_dir.mkdir(exist_ok=True)
 
@@ -30,8 +31,8 @@ def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_po
         pcd_pynt = PyntCloud.from_file(str(obj_or_ply_path))
 
     # set up segmentation model, mapper, and dataset
-    model = NNUNetS2DSModel()
-    fuser = Fuser(class_weight=model.class_weight)
+    model = model()
+    fuser = fuser(class_weight=model.class_weight if hasattr(model, "class_weight") else None)
     mapper = Mapper(model, fuser=fuser)
     dataset = MultiviewDataset(cameras_path, images_dir, select_views=select_views, scale=scale)
 
