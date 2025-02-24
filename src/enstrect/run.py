@@ -18,7 +18,8 @@ warnings.filterwarnings("ignore", message="Detected old nnU-Net plans")  # warni
 
 
 def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_points, scale,
-        model=NNUNetS2DSModel, fuser=Fuser):
+        model=NNUNetS2DSModel, fuser=Fuser,
+        eps_m=0.03, min_points=5, min_samples_cluster=1, init_contraction=10.):
     # create outdir
     out_dir.mkdir(exist_ok=True)
 
@@ -44,7 +45,10 @@ def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_po
 
     # perform extraction
     G_dict = {
-        "crack": extract_centerlines(pcd_pynt, category="crack"),
+        "crack": extract_centerlines(pcd_pynt, category="crack",
+                                     eps_m=eps_m, min_points=min_points,
+                                     min_samples_cluster=min_samples_cluster,
+                                     init_contraction=init_contraction),
         "spalling": extract_bounding_polygons(pcd_pynt, category="spalling"),
         "corrosion": extract_bounding_polygons(pcd_pynt, category="corrosion"),
         "exposed_rebar": extract_bounding_polygons(pcd_pynt, category="exposed_rebar")

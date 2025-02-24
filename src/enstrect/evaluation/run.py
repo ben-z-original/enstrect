@@ -29,6 +29,7 @@ def evaluate(segment_path, damages, vis=True, tolerances=[0.005, 0.01, 0.02, 0.0
         ious.append(iou)
 
     # console output
+    print("Tol \tIoU")
     [print(f"{tol} \t{iou:.3f}") for tol, iou in zip(tolerances, ious)]
 
     if tex_path is not None:

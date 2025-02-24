@@ -8,7 +8,8 @@ from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import cdist
 
 
-def extract_centerlines(pcd_pynt, category="crack", eps_m=0.02, min_points=20):
+def extract_centerlines(pcd_pynt, category="crack",
+                        eps_m=0.02, min_points=20, min_samples_cluster=20, init_contraction=10.):
     cloud = pcd_pynt.to_instance("open3d", mesh=False, normals=True)
 
     # subcloud from category
@@ -20,7 +21,7 @@ def extract_centerlines(pcd_pynt, category="crack", eps_m=0.02, min_points=20):
     if len(points_np) == 0: return G
 
     # cluster analysis
-    cluster = DBSCAN(eps=eps_m, min_samples=20).fit_predict(points_np)
+    cluster = DBSCAN(eps=eps_m, min_samples=min_samples_cluster).fit_predict(points_np)
     cluster_ids, cluster_counts = np.unique(cluster, return_counts=True)
     cluster_ids, cluster_counts = cluster_ids[cluster_ids != -1], cluster_counts[cluster_ids != -1]
 
@@ -31,7 +32,7 @@ def extract_centerlines(pcd_pynt, category="crack", eps_m=0.02, min_points=20):
         idxs_cluster = idxs[np.nonzero(cluster == cluster_id)[0]]
         subcloud = cloud.select_by_index(idxs_cluster)
         try:
-            H = contract_subcloud(subcloud)
+            H = contract_subcloud(subcloud, init_contraction=init_contraction)
             H = nx.relabel_nodes(H, {key: i + len(G) for i, key in enumerate(H.nodes)}, copy=True)
             G = nx.compose(G, H)
         except:
@@ -40,17 +41,17 @@ def extract_centerlines(pcd_pynt, category="crack", eps_m=0.02, min_points=20):
     return G
 
 
-def contract_subcloud(subcloud):
+def contract_subcloud(subcloud, init_contraction=10.):
     # init Laplacian-based contraction
     lbc = LBC(point_cloud=subcloud,
               down_sample=0.001,
-              init_contraction=10., #1.,
-              init_attraction=10., #1.,
-              max_contraction=32,
+              init_contraction=init_contraction,
+              init_attraction=10.,
+              #max_contraction=32,
               max_attraction=2048,
               step_wise_contraction_amplification='auto',
               termination_ratio=0.003,
-              max_iteration_steps=20, #20,
+              max_iteration_steps=20,
               filter_nb_neighbors=20,
               filter_std_ratio=2.0,
               )

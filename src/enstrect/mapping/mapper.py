@@ -34,7 +34,8 @@ class Mapper:
             viewing_conditions.distances[:, i] = self.compute_distances(pcd_pyt3d, sample["camera"])
             viewing_conditions.angles[:, i] = self.compute_angular_view_deviation(pcd_pyt3d.normals_packed(),
                                                                                   sample["camera"])
-            viewing_conditions.visible[:, i] = self.compute_visibility(pcd_pyt3d, sample["camera"], coords, True)
+            viewing_conditions.visible[:, i] = self.compute_visibility(pcd_pyt3d, sample["camera"], coords,
+                                                                       True, diameter_factor=500)
 
             coords[viewing_conditions.visible[:, i] != 1, :] *= 0
 
@@ -87,7 +88,7 @@ class Mapper:
         return angles
 
     @staticmethod
-    def compute_visibility(pcd_pyt3d, camera, coords, self_occlusion=True):
+    def compute_visibility(pcd_pyt3d, camera, coords, self_occlusion=True, diameter_factor=1000):
         visibility = ((0 <= coords[:, 0]) * (coords[:, 0] < int(camera.image_size[0][1].item())) *
                       (0 <= coords[:, 1]) * (coords[:, 1] < int(camera.image_size[0][0].item())))
 
@@ -104,7 +105,7 @@ class Mapper:
             diameter = np.linalg.norm(np.asarray(pcd_o3d.get_max_bound()) - np.asarray(pcd_o3d.get_min_bound()))
             _, idxs = pcd_o3d.hidden_point_removal(
                 camera.get_camera_center()[0].cpu().to(torch.float64).numpy()[:, None].copy(),
-                1000 * diameter)#10 * diameter)  # 1000
+                diameter_factor * diameter)
             idxs_remove = list(set(range(len(idxs_visible))).difference(idxs))
 
             visibility[idxs_visible[idxs_remove]] = 0

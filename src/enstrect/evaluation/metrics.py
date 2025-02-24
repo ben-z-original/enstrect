@@ -15,7 +15,7 @@ def G_to_clCloudIoU(G_true, G_pred, gap=0.001, tol=0.01):
     clcloudiou = clCloudIoU(true_pos, pred_pos, tol=tol)
     return clcloudiou
 
-def clCloudIoU(true_pos, pred_pos, tol=0.1):
+def clCloudIoU(true_pos, pred_pos, tol=0.001):
     """Computes the centerline intersection-over-union on lines in 3D space based on a tolerance value."""
     if len(pred_pos) == 0 and len(true_pos) == 0:
         return 1, 0, 0, 0
