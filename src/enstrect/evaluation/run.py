@@ -8,8 +8,7 @@ from enstrect.evaluation.utils.lines import obj_to_G, G_to_lineset_o3d, G_to_lin
 
 
 def evaluate(segment_path, damages, vis=True, tolerances=[0.005, 0.01, 0.02, 0.04, 0.08],
-             tex_path=None):
-
+             tex_path=None, result_dirname="out"):
     # damages to list if only one damage is given
     damages = [damages] if not isinstance(damages, list) else damages
 
@@ -17,7 +16,7 @@ def evaluate(segment_path, damages, vis=True, tolerances=[0.005, 0.01, 0.02, 0.0
     G_true, G_pred = nx.Graph(), nx.Graph()
     for damage in damages:
         true_path = segment_path / "annotations" / f"{damage}.obj"
-        pred_path = segment_path / "out" / f"{damage}.obj"
+        pred_path = segment_path / result_dirname / f"{damage}.obj"
 
         G_true = nx.compose(G_true, obj_to_G(true_path)) if true_path.exists() else G_true
         G_pred = nx.compose(G_pred, obj_to_G(pred_path)) if pred_path.exists() else G_pred
@@ -60,8 +59,10 @@ if __name__ == "__main__":
                         default=Path(__file__).parents[1] / "assets" / "segments",
                         help="Directory path to dataset root")
     parser.add_argument('--vis', action='store_true', help="Enable visualization")
+    parser.add_argument('--result_dirname', type=str, default="out",
+                        help="Name of the results directory for predicted damage files")
     args = parser.parse_args()
 
     segment_path = args.datadir / args.structure / args.segment
 
-    evaluate(segment_path, args.damage, vis=args.vis, tex_path=None)
+    evaluate(segment_path, args.damage, vis=args.vis, tex_path=None, result_dirname=args.result_dirname)
