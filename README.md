@@ -14,13 +14,15 @@ Link to [ECCVW'24 Paper](https://link.springer.com/chapter/10.1007/978-3-031-928
 
 If you find our work useful, kindly cite accordingly:
 ```
-@InProceedings{benz2024enstrect,
-    author       = {Christian Benz and Volker Rodehorst},
-    title        = {ENSTRECT: A Stage-based Approach to 2.5D Structural Damage Detection},
+@InProceedings{benz2025enstrect,
+    author       = {Benz, Christian and Rodehorst, Volker},
+    title        = {Enstrect: A Stage-Based Approach to 2.5D Structural Damage Detection},
     booktitle    = {Computer Vision -- ECCV 2024 Workshops},
-    publisher    = {Springer},
-    city         = {Cham},
-    year         = {2024}
+    editor       = {Del Bue, Alessio and Canton, Cristian and Pont-Tuset, Jordi and Tommasi, Tatiana},
+    year         = {2025},
+    publisher    = {Springer Nature Switzerland},
+    address      = {Cham},
+    pages        = {409--427},
 }
 ```
 
