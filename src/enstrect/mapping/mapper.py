@@ -1,4 +1,3 @@
-import cv2
 import torch
 import matplotlib
 import numpy as np
