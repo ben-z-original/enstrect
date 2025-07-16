@@ -1,3 +1,4 @@
+import torch
 import warnings
 from pathlib import Path
 from pytorch3d.io import IO
@@ -17,12 +18,10 @@ from enstrect.datasets.utils import sample_points_from_meshes_pyt3d
 warnings.filterwarnings("ignore", message="Detected old nnU-Net plans")  # warning can be ignored
 
 
-def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_points, scale,
-        model=NNUNetS2DSModel, fuser=Fuser,
-        eps_m=0.03, min_points=5, min_samples_cluster=1, init_contraction=10.):
+def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_points, scale, model=NNUNetS2DSModel,
+        fuser=Fuser, dilate=False, eps_m=0.03, min_points=5, min_samples_cluster=1, init_contraction=10.):
     # create outdir
     out_dir.mkdir(exist_ok=True)
-
     # sample or load point cloud
     if obj_or_ply_path.suffix == ".obj":
         meshes = IO().load_mesh(obj_or_ply_path)
@@ -38,7 +37,7 @@ def run(obj_or_ply_path, cameras_path, images_dir, out_dir, select_views, num_po
     dataset = MultiviewDataset(cameras_path, images_dir, select_views=select_views, scale=scale)
 
     # perform mapping 2D->3D
-    pcd_pynt = mapper(pcd_pynt, dataset)
+    pcd_pynt = mapper(pcd_pynt, dataset, dilate=dilate)
     pcd_pynt = prepare_exposed_rebar(pcd_pynt)
     out_dir.mkdir(exist_ok=True)
     pcd_pynt.to_file(str(Path(out_dir) / f"pcd_{num_points}_processed.ply"))

@@ -1,8 +1,10 @@
+import cv2
 import torch
 import matplotlib
 import numpy as np
 import open3d as o3d
 from addict import Dict
+import torch.nn.functional as F
 from enstrect.mapping.fuser import Fuser
 from enstrect.extraction.utils import pynt_to_pyt3d
 
@@ -17,7 +19,7 @@ class Mapper:
         self.device = device
         self.fuser = fuser
 
-    def __call__(self, pcd_pynt, dataset, store_probabilities=True):
+    def __call__(self, pcd_pynt, dataset, store_probabilities=True, dilate=True):
         pcd_pyt3d = pynt_to_pyt3d(pcd_pynt, self.device)
 
         viewing_conditions = Dict({feat: np.zeros((len(pcd_pyt3d.points_packed()), len(dataset)), dtype=np.float16)
@@ -34,13 +36,17 @@ class Mapper:
             viewing_conditions.distances[:, i] = self.compute_distances(pcd_pyt3d, sample["camera"])
             viewing_conditions.angles[:, i] = self.compute_angular_view_deviation(pcd_pyt3d.normals_packed(),
                                                                                   sample["camera"])
-            viewing_conditions.visible[:, i] = self.compute_visibility(pcd_pyt3d, sample["camera"], coords,
-                                                                       True, diameter_factor=500)
+            viewing_conditions.visible[:, i] = self.compute_visibility(pcd_pyt3d, sample["camera"], coords, True)
 
             coords[viewing_conditions.visible[:, i] != 1, :] *= 0
 
             # probabilities
             soft = self.model(sample["image"])[0]
+
+            if dilate:
+                # dilate probabilities to make sure narrow cracks are propagated to (lower-res) point cloud
+                kernel_size = 3
+                soft = F.max_pool2d(soft[None], kernel_size=kernel_size, stride=1, padding=kernel_size // 2).squeeze()
 
             if False:
                 matplotlib.use("TkAgg")
@@ -88,7 +94,7 @@ class Mapper:
         return angles
 
     @staticmethod
-    def compute_visibility(pcd_pyt3d, camera, coords, self_occlusion=True, diameter_factor=1000):
+    def compute_visibility(pcd_pyt3d, camera, coords, self_occlusion=True, diameter=1000):
         visibility = ((0 <= coords[:, 0]) * (coords[:, 0] < int(camera.image_size[0][1].item())) *
                       (0 <= coords[:, 1]) * (coords[:, 1] < int(camera.image_size[0][0].item())))
 
@@ -102,10 +108,8 @@ class Mapper:
             # run hidden point removal (HPR)
             idxs_visible = np.where(visibility)[0]
             pcd_o3d = pcd_o3d.select_by_index(idxs_visible)
-            diameter = np.linalg.norm(np.asarray(pcd_o3d.get_max_bound()) - np.asarray(pcd_o3d.get_min_bound()))
             _, idxs = pcd_o3d.hidden_point_removal(
-                camera.get_camera_center()[0].cpu().to(torch.float64).numpy()[:, None].copy(),
-                diameter_factor * diameter)
+                camera.get_camera_center()[0].cpu().to(torch.float64).numpy()[:, None].copy(), diameter)
             idxs_remove = list(set(range(len(idxs_visible))).difference(idxs))
 
             visibility[idxs_visible[idxs_remove]] = 0

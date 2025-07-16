@@ -48,6 +48,8 @@ def evaluate(segment_path, damages, vis=True, tolerances=[0.005, 0.01, 0.02, 0.0
         mesh = o3d.io.read_triangle_mesh(str(segment_path / "mesh" / "mesh.obj"), True)
         o3d.visualization.draw_geometries([*linemesh_pred, mesh])  # *linemesh_true
 
+    return ious
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate and visualize results.")
