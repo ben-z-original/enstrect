@@ -10,17 +10,19 @@ ENSTRECT – short for **<ins>En</ins>hanced <ins>Str</ins>uctural Insp<ins>ect<
 | <img src="https://github.com/user-attachments/assets/cc4ae4b5-46a7-4f21-9ba5-288f338c197d" width=100%> | <img src="https://github.com/user-attachments/assets/5a6c6b74-d500-4e9e-9cb3-deaf048c6d2f" width=100%> |
 
 ## Citation
-[Link to ECCVW'24 Paper](https://arxiv.org/pdf/2401.03298) (ArXiV)
+Link to [ECCVW'24 Paper](https://link.springer.com/chapter/10.1007/978-3-031-92805-5_26) ([ArXiV Version](https://arxiv.org/pdf/2401.03298))
 
 If you find our work useful, kindly cite accordingly:
 ```
-@InProceedings{benz2024enstrect,
-    author       = {Christian Benz and Volker Rodehorst},
-    title        = {ENSTRECT: A Stage-based Approach to 2.5D Structural Damage Detection},
+@InProceedings{benz2025enstrect,
+    author       = {Benz, Christian and Rodehorst, Volker},
+    title        = {Enstrect: A Stage-Based Approach to 2.5D Structural Damage Detection},
     booktitle    = {Computer Vision -- ECCV 2024 Workshops},
-    publisher    = {Springer},
-    city         = {Cham},
-    year         = {2024}
+    editor       = {Del Bue, Alessio and Canton, Cristian and Pont-Tuset, Jordi and Tommasi, Tatiana},
+    year         = {2025},
+    publisher    = {Springer Nature Switzerland},
+    address      = {Cham},
+    pages        = {409--427},
 }
 ```
 
